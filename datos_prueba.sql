@@ -5,7 +5,6 @@ INSERT INTO Categorias (nombre, descripcion) VALUES
  ('Almacenamiento', 'Discos duros, SSD, USB'),
  ('Componentes',    'Partes internas: RAM, tarjetas, fuentes');
 
-
 INSERT INTO Clientes (cedula, nombre, apellidos, email, telefono, direccion) VALUES
  ('101110111', 'Ana',      'Rodríguez Solano',  'ana.rodriguez@mail.com',   '8888-1111', 'San José, Costa Rica'),
  ('202220222', 'Carlos',   'Jiménez Vargas',    'carlos.jimenez@mail.com', '8888-2222', 'Heredia, Costa Rica'),
@@ -32,7 +31,6 @@ INSERT INTO Productos (codigo, nombre, descripcion, id_categoria, precio_unitari
  ('COM-001', 'Memoria RAM Kingston 8GB',     'RAM DDR4 3200MHz',             5,  28000, 22, 6),
  ('COM-002', 'Fuente de Poder EVGA 600W',    'Fuente certificada 80+ Bronze',5,  55000,  9, 3),
  ('COM-003', 'Tarjeta Madre ASUS B450',      'Tarjeta madre AM4',            5,  95000,  7, 2);
-
 
 DO $$
 DECLARE
