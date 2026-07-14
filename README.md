@@ -22,7 +22,7 @@ psql -d techstore_cr -f triggers.sql
 psql -d techstore_cr -f datos_prueba.sql
 ```
 
-Luego edita las credenciales en `DB_CONFIG` dentro de `07_app.py` y ejecuta:
+Luego edita las credenciales en `DB_CONFIG` dentro de `app.py` y ejecuta:
 ```bash
 pip install "psycopg[binary]"
 python3 app.py
