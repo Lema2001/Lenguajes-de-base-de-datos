@@ -6,29 +6,29 @@ Todo el código fue **probado de extremo a extremo** en una instancia real de Po
 ## Orden de ejecución (importante)
 
 ```
-01_schema.sql               -- crea las 5 tablas
-03_funciones.sql             -- crea las 15 funciones (algunas son usadas por los procedimientos)
-02_procedimientos_crud.sql   -- crea los 25 procedimientos CRUD
-04_vistas.sql                -- crea las 10 vistas
-05_triggers.sql               -- crea los 5 triggers
-06_datos_prueba.sql          -- puebla la base y genera ventas de ejemplo
+schema.sql               -- crea las 5 tablas
+funciones.sql             -- crea las 15 funciones (algunas son usadas por los procedimientos)
+procedimientos_crud.sql   -- crea los 25 procedimientos CRUD
+vistas.sql                -- crea las 10 vistas
+triggers.sql               -- crea los 5 triggers
+datos_prueba.sql          -- puebla la base y genera ventas de ejemplo
 ```
 
 Ejemplo con psql:
 ```bash
 createdb techstore_cr
-psql -d techstore_cr -f 01_schema.sql
-psql -d techstore_cr -f 03_funciones.sql
-psql -d techstore_cr -f 02_procedimientos_crud.sql
-psql -d techstore_cr -f 04_vistas.sql
-psql -d techstore_cr -f 05_triggers.sql
-psql -d techstore_cr -f 06_datos_prueba.sql
+psql -d techstore_cr -f schema.sql
+psql -d techstore_cr -f funciones.sql
+psql -d techstore_cr -f procedimientos_crud.sql
+psql -d techstore_cr -f vistas.sql
+psql -d techstore_cr -f triggers.sql
+psql -d techstore_cr -f datos_prueba.sql
 ```
 
 Luego edita las credenciales en `DB_CONFIG` dentro de `07_app.py` y ejecuta:
 ```bash
 pip install "psycopg[binary]"
-python3 07_app.py
+python3 app.py
 ```
 
 ## Modelo de datos
@@ -46,19 +46,19 @@ python3 07_app.py
 - **Cursores**: 
   - Los 5 procedimientos `*_listar` abren un `REFCURSOR` con nombre; Python hace `FETCH ALL FROM <cursor>` dentro de la misma transacción (no hace `SELECT` directo sobre las tablas).
   - `fn_verificar_stock_minimo()` y `fn_producto_mas_vendido()` usan **cursores explícitos** (`CURSOR FOR ... OPEN ... FETCH ... LOOP ... CLOSE`) dentro de PL/pgSQL, como ejemplo adicional de manejo de cursores en funciones.
-- **Sin CRUD directo desde Python**: `07_app.py` solo hace `CALL sp_...` para operaciones de escritura/lectura puntual, `SELECT * FROM fn_...()` para invocar funciones almacenadas, y `SELECT * FROM vw_...` para las vistas de reportería. Nunca hace `INSERT/UPDATE/DELETE/SELECT` directo sobre `Clientes`, `Productos`, `Facturas`, etc.
+- **Sin CRUD directo desde Python**: `app.py` solo hace `CALL sp_...` para operaciones de escritura/lectura puntual, `SELECT * FROM fn_...()` para invocar funciones almacenadas, y `SELECT * FROM vw_...` para las vistas de reportería. Nunca hace `INSERT/UPDATE/DELETE/SELECT` directo sobre `Clientes`, `Productos`, `Facturas`, etc.
 
 ## Resumen de objetos entregados
 
 | Tipo | Cantidad | Archivo |
 |---|---|---|
-| Tablas | 5 | `01_schema.sql` |
-| Procedimientos CRUD | 25 (5 × tabla) | `02_procedimientos_crud.sql` |
-| Funciones PL/pgSQL | 15 | `03_funciones.sql` |
-| Vistas | 10 | `04_vistas.sql` |
-| Triggers | 5 | `05_triggers.sql` |
-| Datos de prueba | — | `06_datos_prueba.sql` |
-| App Python (psycopg 3) | — | `07_app.py` |
+| Tablas | 5 | `schema.sql` |
+| Procedimientos CRUD | 25 (5 × tabla) | `procedimientos_crud.sql` |
+| Funciones PL/pgSQL | 15 | `funciones.sql` |
+| Vistas | 10 | `vistas.sql` |
+| Triggers | 5 | `triggers.sql` |
+| Datos de prueba | — | `datos_prueba.sql` |
+| App Python (psycopg 3) | — | `app.py` |
 
 ## Notas para la presentación del avance
 
