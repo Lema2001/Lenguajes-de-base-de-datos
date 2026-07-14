@@ -1,9 +1,6 @@
 # TechStore CR — Avance II (Base de Datos)
 
-Proyecto: tienda tecnológica, PostgreSQL 16 + Python (psycopg 3).
-Todo el código fue **probado de extremo a extremo** en una instancia real de PostgreSQL 16 (esquema, 25 procedimientos, 15 funciones, 10 vistas, 5 triggers, datos de prueba y el script Python), no es solo teoría.
-
-## Orden de ejecución (importante)
+## Orden de ejecución
 
 ```
 schema.sql               -- crea las 5 tablas
