@@ -60,13 +60,3 @@ python3 app.py
 | Datos de prueba | — | `datos_prueba.sql` |
 | App Python (psycopg 3) | — | `app.py` |
 
-## Notas para la presentación del avance
-
-- Cada objeto SQL tiene un comentario justo arriba explicando su propósito.
-- `06_datos_prueba.sql` genera 5 facturas usando los procedimientos almacenados (igual que lo haría la app), incluyendo una que se anula a propósito para demostrar la restauración de stock por trigger.
-- Puedes verificar visualmente el efecto de los triggers con:
-  ```sql
-  SELECT numero_factura, subtotal, iva, total, estado FROM Facturas;
-  SELECT id_producto, nombre, stock FROM Productos;
-  SELECT * FROM vw_resumen_diario_ventas;
-  ```
