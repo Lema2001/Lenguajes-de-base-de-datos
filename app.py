@@ -11,11 +11,9 @@ DB_CONFIG = {
     "password": "postgres",
 }
 
-
 def get_connection() -> psycopg.Connection:
     """Crea y retorna una nueva conexión a PostgreSQL."""
     return psycopg.connect(**DB_CONFIG)
-
 
 @dataclass
 class Cliente:
@@ -28,7 +26,6 @@ class Cliente:
     direccion: Optional[str]
     activo: bool
 
-
 def categoria_insertar(nombre: str, descripcion: str) -> int:
     with get_connection() as conn:
         with conn.cursor() as cur:
@@ -39,7 +36,6 @@ def categoria_insertar(nombre: str, descripcion: str) -> int:
         conn.commit()
         return id_categoria
 
-
 def categoria_actualizar(id_categoria: int, nombre: str, descripcion: str, activo: bool) -> None:
     with get_connection() as conn:
         with conn.cursor() as cur:
@@ -49,13 +45,11 @@ def categoria_actualizar(id_categoria: int, nombre: str, descripcion: str, activ
             )
         conn.commit()
 
-
 def categoria_eliminar(id_categoria: int) -> None:
     with get_connection() as conn:
         with conn.cursor() as cur:
             cur.execute("CALL sp_categoria_eliminar(%s)", (id_categoria,))
         conn.commit()
-
 
 def categoria_obtener(id_categoria: int) -> Optional[tuple]:
     with get_connection() as conn:
@@ -65,7 +59,6 @@ def categoria_obtener(id_categoria: int) -> Optional[tuple]:
                 (id_categoria,),
             )
             return cur.fetchone()
-
 
 def categoria_listar() -> list[tuple]:
     """Ejemplo de consumo de un procedimiento que abre un
@@ -80,7 +73,6 @@ def categoria_listar() -> list[tuple]:
         conn.commit()
         return filas
 
-
 def cliente_insertar(cedula, nombre, apellidos, email, telefono, direccion) -> int:
     with get_connection() as conn:
         with conn.cursor() as cur:
@@ -90,7 +82,6 @@ def cliente_insertar(cedula, nombre, apellidos, email, telefono, direccion) -> i
             )
             return cur.fetchone()[0]
         
-
 def cliente_actualizar(id_cliente, nombre, apellidos, email, telefono, direccion, activo) -> None:
     with get_connection() as conn:
         with conn.cursor() as cur:
@@ -100,13 +91,11 @@ def cliente_actualizar(id_cliente, nombre, apellidos, email, telefono, direccion
             )
         conn.commit()
 
-
 def cliente_eliminar(id_cliente: int) -> None:
     with get_connection() as conn:
         with conn.cursor() as cur:
             cur.execute("CALL sp_cliente_eliminar(%s)", (id_cliente,))
         conn.commit()
-
 
 def cliente_obtener(id_cliente: int) -> Optional[Cliente]:
     with get_connection() as conn:
@@ -118,7 +107,6 @@ def cliente_obtener(id_cliente: int) -> Optional[Cliente]:
             fila = cur.fetchone()
             return Cliente(*fila) if fila else None
 
-
 def cliente_listar() -> list[tuple]:
     with get_connection() as conn:
         with conn.cursor() as cur:
@@ -127,7 +115,6 @@ def cliente_listar() -> list[tuple]:
             filas = cur.fetchall()
         conn.commit()
         return filas
-
 
 def producto_insertar(codigo, nombre, descripcion, id_categoria, precio, stock, stock_min) -> int:
     with get_connection() as conn:
@@ -138,7 +125,6 @@ def producto_insertar(codigo, nombre, descripcion, id_categoria, precio, stock, 
             )
             return cur.fetchone()[0]
 
-
 def producto_actualizar(id_producto, nombre, descripcion, id_categoria, precio, stock_min, activo) -> None:
     with get_connection() as conn:
         with conn.cursor() as cur:
@@ -148,13 +134,11 @@ def producto_actualizar(id_producto, nombre, descripcion, id_categoria, precio, 
             )
         conn.commit()
 
-
 def producto_eliminar(id_producto: int) -> None:
     with get_connection() as conn:
         with conn.cursor() as cur:
             cur.execute("CALL sp_producto_eliminar(%s)", (id_producto,))
         conn.commit()
-
 
 def producto_obtener(id_producto: int) -> Optional[tuple]:
     with get_connection() as conn:
@@ -165,7 +149,6 @@ def producto_obtener(id_producto: int) -> Optional[tuple]:
             )
             return cur.fetchone()
 
-
 def producto_listar() -> list[tuple]:
     with get_connection() as conn:
         with conn.cursor() as cur:
@@ -174,7 +157,6 @@ def producto_listar() -> list[tuple]:
             filas = cur.fetchall()
         conn.commit()
         return filas
-
 
 def crear_venta(id_cliente: int, lineas: list[tuple[int, int]]) -> tuple[int, str]:
     """
@@ -204,7 +186,6 @@ def crear_venta(id_cliente: int, lineas: list[tuple[int, int]]) -> tuple[int, st
             conn.rollback()
             raise
 
-
 def factura_obtener(id_factura: int) -> Optional[tuple]:
     with get_connection() as conn:
         with conn.cursor() as cur:
@@ -213,7 +194,6 @@ def factura_obtener(id_factura: int) -> Optional[tuple]:
                 (id_factura,),
             )
             return cur.fetchone()
-
 
 def factura_listar() -> list[tuple]:
     with get_connection() as conn:
@@ -224,13 +204,11 @@ def factura_listar() -> list[tuple]:
         conn.commit()
         return filas
 
-
 def factura_anular(id_factura: int) -> None:
     with get_connection() as conn:
         with conn.cursor() as cur:
             cur.execute("CALL sp_factura_eliminar(%s)", (id_factura,))
         conn.commit()
-
 
 def detalle_listar_por_factura(id_factura: int) -> list[tuple]:
     with get_connection() as conn:
@@ -243,13 +221,11 @@ def detalle_listar_por_factura(id_factura: int) -> list[tuple]:
         conn.commit()
         return filas
 
-
 def stock_disponible(id_producto: int) -> int:
     with get_connection() as conn:
         with conn.cursor() as cur:
             cur.execute("SELECT fn_stock_disponible(%s)", (id_producto,))
             return cur.fetchone()[0]
-
 
 def productos_bajo_stock_minimo() -> list[tuple]:
     with get_connection() as conn:
@@ -257,20 +233,17 @@ def productos_bajo_stock_minimo() -> list[tuple]:
             cur.execute("SELECT * FROM fn_verificar_stock_minimo()")
             return cur.fetchall()
 
-
 def valor_total_inventario() -> float:
     with get_connection() as conn:
         with conn.cursor() as cur:
             cur.execute("SELECT fn_valor_total_inventario()")
             return float(cur.fetchone()[0])
 
-
 def total_ventas_por_cliente(id_cliente: int) -> float:
     with get_connection() as conn:
         with conn.cursor() as cur:
             cur.execute("SELECT fn_total_ventas_por_cliente(%s)", (id_cliente,))
             return float(cur.fetchone()[0])
-
 
 def total_ventas_periodo(fecha_inicio: date, fecha_fin: date) -> float:
     with get_connection() as conn:
@@ -280,13 +253,11 @@ def total_ventas_periodo(fecha_inicio: date, fecha_fin: date) -> float:
             )
             return float(cur.fetchone()[0])
 
-
 def producto_mas_vendido() -> Optional[tuple]:
     with get_connection() as conn:
         with conn.cursor() as cur:
             cur.execute("SELECT * FROM fn_producto_mas_vendido()")
             return cur.fetchone()
-
 
 def reporte_inventario_valorizado() -> list[tuple]:
     with get_connection() as conn:
@@ -294,13 +265,11 @@ def reporte_inventario_valorizado() -> list[tuple]:
             cur.execute("SELECT * FROM vw_inventario_valorizado")
             return cur.fetchall()
 
-
 def reporte_ventas_mensuales() -> list[tuple]:
     with get_connection() as conn:
         with conn.cursor() as cur:
             cur.execute("SELECT * FROM vw_ventas_mensuales")
             return cur.fetchall()
-
 
 def reporte_top_10_productos() -> list[tuple]:
     with get_connection() as conn:
@@ -308,13 +277,11 @@ def reporte_top_10_productos() -> list[tuple]:
             cur.execute("SELECT * FROM vw_top_10_productos_vendidos")
             return cur.fetchall()
 
-
 def _imprimir_tabla(filas, encabezados):
     print(" | ".join(encabezados))
     print("-" * 80)
     for fila in filas:
         print(" | ".join(str(v) for v in fila))
-
 
 def main():
     print("=== TechStore CR - Demo Avance II ===\n")
@@ -355,7 +322,6 @@ def main():
         reporte_top_10_productos(),
         ["id", "nombre", "codigo", "unidades", "total_generado"],
     )
-
 
 if __name__ == "__main__":
     main()
